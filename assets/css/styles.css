@@ -156,11 +156,16 @@ ul { padding-left: 1.2em; }
 /* ---------- Header ---------- */
 .site-header {
   position: sticky; top: 0; z-index: 100;
+  border-bottom: 1px solid transparent;
+  transition: border-color .2s var(--ease), box-shadow .2s var(--ease);
+}
+/* The frosted background lives on a pseudo-element: backdrop-filter on the header itself
+   would become the containing block for the fixed mobile menu and collapse its height. */
+.site-header::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
   background: rgba(255, 255, 255, .94);
   backdrop-filter: saturate(160%) blur(10px);
   -webkit-backdrop-filter: saturate(160%) blur(10px);
-  border-bottom: 1px solid transparent;
-  transition: border-color .2s var(--ease), box-shadow .2s var(--ease);
 }
 .site-header.is-scrolled { border-bottom-color: var(--gray-200); box-shadow: var(--shadow-sm); }
 .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: var(--header-h); }
@@ -183,7 +188,8 @@ ul { padding-left: 1.2em; }
 .nav-open .nav-toggle .icon-close { display: block; }
 
 .site-nav {
-  position: fixed; inset: var(--header-h) 0 0 0; z-index: 99;
+  position: fixed; top: var(--header-h); left: 0; right: 0; z-index: 99;
+  height: calc(100vh - var(--header-h)); height: calc(100dvh - var(--header-h));
   background: var(--white); padding: 16px var(--gutter) 32px;
   overflow-y: auto; visibility: hidden; opacity: 0; transform: translateY(-8px);
   transition: opacity .2s var(--ease), transform .2s var(--ease), visibility 0s linear .2s;
@@ -201,7 +207,7 @@ ul { padding-left: 1.2em; }
 @media (min-width: 1024px) {
   .nav-toggle { display: none; }
   .site-nav {
-    position: static; inset: auto; padding: 0; background: none; overflow: visible;
+    position: static; inset: auto; height: auto; padding: 0; background: none; overflow: visible;
     visibility: visible; opacity: 1; transform: none; display: flex; align-items: center; gap: 28px;
   }
   .nav-list { display: flex; gap: 4px; }
